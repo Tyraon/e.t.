@@ -16,17 +16,17 @@
         <img src="img/help-faq.png" height="40" id="chat" /></td></tr>
         <tr><td id="chat">Chat
         </td></tr></table>
-        <table border="0" class="ditem"><tr><td>
+        <table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
         <img src="img/checklist-icon--e-commerce-iconset--ebiene-11.png" height="40" /></td></tr>
         <tr><td>Tests
         </td></tr></table>
-		<table border="0" class="ditem" id="docs"><tr><td id="docs">
-        <img src="img/default-document-2.png" height="40" id="docs" /></td></tr>
-        <tr><td id="docs">Artikel
+		<table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
+        <img src="img/default-document-2.png" height="40" /></td></tr>
+        <tr><td>Artikel
         </td></tr></table>
-        <table border="0" class="ditem" id="settings"><tr><td id="settings">
-        <img src="img/settings-icon-25.png" height="40" id="settings" /></td></tr>
-        <tr><td id="settings">Einstellung
+        <table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
+        <img src="img/settings-icon-25.png" height="40" /></td></tr>
+        <tr><td>Einstellung
         </td></tr></table>
     </div>
 </div>

@@ -386,3 +386,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', end
 	border: 1px outset #999;
 	box-shadow: 0px 0px 5px 0px #333;
 }
+
+.whisper {
+	cursor:default;
+}

@@ -6,9 +6,16 @@
     
     <div id="chat_top">
     <button id="whois">Online?</button>
+    <button id="whisper" title="Oder im Ausgabefenster auf den Namen klicken">Flüstern</button>
     <select id="channel" size="1">
     	<option value="Lobby">Lobby</option>
         <option value="Backstage">Backstage</option>
+        <?php
+		@session_start();
+		if($_SESSION['et_lvl'] >= "4") {
+			echo '<option value="Kaffeküche">Kaffeküche</option>';
+		}
+		?>
     </select>
     </div>
     
@@ -43,6 +50,10 @@
 	});
 	
 	$('#whois').click(whoIs);
+	
+	$('#whisper').click(function(){
+		$('#text_input').val('/w ');
+	});
 	
 	$('#channel').on('change', function(){
 		$.ajax({
@@ -80,13 +91,15 @@
 			});
 		});
 	}
-	
+		
 	setInterval(function(){
 		$.ajax({
 			url: 'class/chat.class.php?a=out',
 			mehtod: 'GET'
 		}).done(function(result){
 			$('#chat_output').append(result);
+			$('#chat_output').scrollTop($('#chat_output')[0].scrollHeight);
+			//console.log($('#chat_output')[0].scrollHeight);
 		});
 	},5000);
 </script>

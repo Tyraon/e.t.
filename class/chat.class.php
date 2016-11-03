@@ -22,7 +22,7 @@ function setOnline(){
 	if($anz == 1) {
 		@mysql_query("UPDATE `et_online` SET `logtime` = '".$zeit."' WHERE `username` = '{$_SESSION['et_user']}'");
 	} else {
-		@mysql_query("INSERT INTO `et_online`VALUES('{$_SESSION['et_user']}','".$time."')");
+		@mysql_query("INSERT INTO `et_online`VALUES('{$_SESSION['et_user']}','".$zeit."')");
 	}
 }
 
@@ -39,17 +39,19 @@ if($_GET['a'] == "channel") {
 }
 
 if($_GET['a'] == "out") {
-	$generel = @mysql_query("SELECT * FROM `et_chat` WHERE `channel` = '{$_SESSION['channel']}' AND `msgtime` > '{$_SESSION['lastcheck']}'");
-	$whisper = @mysql_query("SELECT * FROM `et_chat` WHERE `channel` = 'WHISPER' AND `whisperto` = '{$_SESSION['et_user']}' AND `msgtime` > '{$_SESSION['lastcheck']}'");
-	$whisperto = @mysql_query("SELECT * FROM `et_chat`WHERE `channel` = 'WHISPER' AND `username` = '{$_SESSION['et_user']}' AND `msgtime` > '{$_SESSION['lastcheck']}'");
+	$deltime = date("u")-((60*60)*24);
+	@mysql_query("DELETE FROM `et_chat` WHERE `msgtime` < '".$deltime."'");
+	$generel = @mysql_query("SELECT * FROM `et_chat` WHERE `channel` = '{$_SESSION['channel']}' AND `msgtime` >= '{$_SESSION['lastcheck']}'");
+	$whisper = @mysql_query("SELECT * FROM `et_chat` WHERE `channel` = 'WHISPER' AND `whisperto` = '{$_SESSION['et_user']}' AND `msgtime` >= '{$_SESSION['lastcheck']}'");
+	$whisperto = @mysql_query("SELECT * FROM `et_chat`WHERE `channel` = 'WHISPER' AND `username` = '{$_SESSION['et_user']}' AND `msgtime` >= '{$_SESSION['lastcheck']}'");
 	while($data = @mysql_fetch_row($generel)) {
-		echo '<span class="chat_line"><b>'.$data[1].' '.date("H:m:s", (int)$data[2]).':</b> '.$data[5].'</span><br>';
+		echo '<span class="chat_line"><b><span class="whisper" onclick="$(\'#text_input\').val(\'/w '.$data[1].' \');$(\'#text_input\').focus();">'.$data[1].'</span> <small>['.date("H:m:s", (int)$data[2]).']</small>:</b> '.$data[5].'</span><br>';
 	}
 	while($data = @mysql_fetch_row($whisper)) {
-		echo '<span class="chat_line"><b>'.$data[1].' '.date("H:m:s", (int)$data[2]).' <i>fl&uuml;stert</i>:</b> '.$data[5].'</span><br>';
+		echo '<span class="chat_line"><b>'.$data[1].' <small>['.date("H:m:s", (int)$data[2]).']</small> <i>fl&uuml;stert</i>:</b> '.$data[5].'</span><br>';
 	}
 	while($data = @mysql_fetch_row($whisperto)) {
-		echo '<span class="chat_line"><b>'.$data[1].' '.date("H:m:s", (int)$data[2]).' <i>zu '.$data[4].'</i>:</b> '.$data[5].'</span><br>';
+		echo '<span class="chat_line"><b>'.$data[1].' <small>['.date("H:m:s", (int)$data[2]).']</small> <i>zu '.$data[4].'</i>:</b> '.$data[5].'</span><br>';
 	}
 	$_SESSION['lastcheck'] = date("U");
 	setOnline();
@@ -72,9 +74,10 @@ if($_GET['a'] == "in") {
 	}
 		
 	if(substr($input,0,3) == "/w ") {
-		$block = @explode(" ",substr($input,3));
-		$input = $block[1];
+		$block = @explode(" ",substr_replace($input,'',0,3));
+		//$input = $block[1];
 		$whisper = $block[0];
+		$input = substr_replace($input,'',0,(strlen($whisper)+4));
 		$channel = "WHISPER";
 	}
 	
