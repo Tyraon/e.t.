@@ -14,6 +14,30 @@ if(@!$_SESSION['jointime']) {
 	$_SESSION['channel'] = "Lobby";
 }
 
+function setOnline(){
+	$zeit = date("U");
+	$oldtime = date("U")-9;
+	@mysql_query("DELETE FROM `et_online` WHERE `logtime` < '".$oldtime."'");
+	$anz = @mysql_num_rows(mysql_query("SELECT * FROM `et_online` WHERE `username` = '{$_SESSION['et_user']}'"));
+	if($anz == 1) {
+		@mysql_query("UPDATE `et_online` SET `logtime` = '".$zeit."' WHERE `username` = '{$_SESSION['et_user']}'");
+	} else {
+		@mysql_query("INSERT INTO `et_online`VALUES('{$_SESSION['et_user']}','".$time."')");
+	}
+}
+
+if($_GET['a'] == "online") {
+	$erg = @mysql_query("SELECT * FROM `et_online` ORDER BY username ASC");
+	while($data = @mysql_fetch_row($erg)) {
+		echo $data[0].'<br>';
+	}
+}
+
+if($_GET['a'] == "channel") {
+	$_SESSION['channel'] = $_GET['channel'];
+	echo 'New Channel: '.$_SESSION['channel'];
+}
+
 if($_GET['a'] == "out") {
 	$generel = @mysql_query("SELECT * FROM `et_chat` WHERE `channel` = '{$_SESSION['channel']}' AND `msgtime` > '{$_SESSION['lastcheck']}'");
 	$whisper = @mysql_query("SELECT * FROM `et_chat` WHERE `channel` = 'WHISPER' AND `whisperto` = '{$_SESSION['et_user']}' AND `msgtime` > '{$_SESSION['lastcheck']}'");
@@ -28,6 +52,7 @@ if($_GET['a'] == "out") {
 		echo '<span class="chat_line"><b>'.$data[1].' '.date("H:m:s", (int)$data[2]).' <i>zu '.$data[4].'</i>:</b> '.$data[5].'</span><br>';
 	}
 	$_SESSION['lastcheck'] = date("U");
+	setOnline();
 }
 
 if($_GET['a'] == "in") {

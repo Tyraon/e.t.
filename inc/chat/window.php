@@ -5,6 +5,11 @@
     </div>
     
     <div id="chat_top">
+    <button id="whois">Online?</button>
+    <select id="channel" size="1">
+    	<option value="Lobby">Lobby</option>
+        <option value="Backstage">Backstage</option>
+    </select>
     </div>
     
     <div id="chat_output">
@@ -37,6 +42,17 @@
 		}
 	});
 	
+	$('#whois').click(whoIs);
+	
+	$('#channel').on('change', function(){
+		$.ajax({
+			url: 'class/chat.class.php?a=channel&channel=' + $('#channel option:selected').val(),
+			mehtod: 'GET'
+		}).done(function(result){
+			console.log(result);
+		});
+	});
+	
 	$('#senden').click(sendMessage);
 	
 	function sendMessage(){
@@ -49,6 +65,19 @@
 			$('#text_input').focus();
 			//console.log(result);
 			$('#aktion').append(result);
+		});
+	}
+	
+	function whoIs(){
+		$.ajax({
+			url: 'class/chat.class.php?a=online',
+			method: 'GET'
+		}).done(function(result){
+			var online = '<div id="onlinelist">' + result + '</div>';
+			$('body').append(online);
+			$(document).click(function(){
+				$('#onlinelist').remove();
+			});
 		});
 	}
 	
