@@ -24,6 +24,15 @@ if(!$_SESSION['et_uid']) {
 		case "chat":
 		@include('inc/chat.php');
 		break;
+		case "course":
+		@include('inc/course.php');
+		break;
+		case "manage":
+		@include('inc/manage.php');
+		break;
+		case "presence":
+		@include('inc/presence.php');
+		break;
 	}
 }
 

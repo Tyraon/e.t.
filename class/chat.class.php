@@ -34,7 +34,13 @@ if($_GET['a'] == "online") {
 }
 
 if($_GET['a'] == "channel") {
+	$oldchannel = $_SESSION['channel'];
 	$_SESSION['channel'] = $_GET['channel'];
+	$channel = $_SESSION['channel'];
+	$time = date("u");
+	$whisper = "NULL";
+	@mysql_query("INSERT INTO `et_chat` VALUES('','".$chatbot."','".$time."','".$oldchannel."','".$whisper."','<b>Der Nutzer ".$_SESSION['et_user']." wechselt den Channel!</b>')");
+	@mysql_query("INSERT INTO `et_chat` VALUES('','".$chatbot."','".$time."','".$channel."','".$whisper."','<b>Der Nutzer ".$_SESSION['et_user']." betritt den Channel!</b>')");
 	echo 'New Channel: '.$_SESSION['channel'];
 }
 

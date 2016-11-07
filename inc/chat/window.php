@@ -12,6 +12,13 @@
         <option value="Backstage">Backstage</option>
         <?php
 		@session_start();
+		@include('../../sys/config.php');
+		$db = @mysql_connect($config['db_host'],$config['db_user'],$config['db_pass']);
+		@mysql_select_db($config['db_name']);
+		$data = @mysql_fetch_row(mysql_query("SELECT * FROM `et_course` WHERE `id` = '{$_SESSION['et_course']}'"));
+		echo '<option value="'.$data[2].'">'.$data[2].'</option>';
+		@mysql_close($db);
+
 		if($_SESSION['et_lvl'] >= "4") {
 			echo '<option value="Kaffeküche">Kaffeküche</option>';
 		}

@@ -24,9 +24,33 @@
         <img src="img/default-document-2.png" height="40" /></td></tr>
         <tr><td>Artikel
         </td></tr></table>
+		<table border="0" class="ditem" id="presence" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td id="presence">
+        <img src="img/preferences-calendar-and-tasks.png" height="40" id="chat" /></td></tr>
+        <tr><td id="presence">Anwesend
+        </td></tr></table>
         <table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
         <img src="img/settings-icon-25.png" height="40" /></td></tr>
         <tr><td>Einstellung
         </td></tr></table>
+        <?php
+		if($_SESSION['et_lvl'] >= "4") {
+		?>        
+        <table border="0" class="ditem" id="course"><tr><td id="course">
+        <img src="img/config-users.png" height="40" id="course" /></td></tr>
+        <tr><td id="course">Kurs/Klasse
+        </td></tr></table>
+			
+        <?php
+		}
+		if($_SESSION['et_lvl'] == "5") {
+		?>
+        <table border="0" class="ditem" id="manage" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td id="manage">
+        <img src="img/preferences-contact-list.png" height="40" id="manage" /></td></tr>
+        <tr><td id="manage">Benutzer
+        </td></tr></table>
+
+        <?php
+		}
+		?>
     </div>
 </div>

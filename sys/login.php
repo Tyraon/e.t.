@@ -15,6 +15,7 @@ if($_GET['a'] == "1") {
 		$_SESSION['et_lastname'] = $data[7];
 		$_SESSION['et_firstname'] = $data[6];
 		$_SESSION['et_email'] = $data[3];
+		$_SESSION['et_course'] = $data[8];
 		$newtime = date("Y-m-d H:i:s");
 		@mysql_query("UPDATE et_user SET last_login='".$newtime."' WHERE username LIKE '{$_POST['user']}");
 		echo '<script>location.replace("index.php");</script>';
