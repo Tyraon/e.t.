@@ -6,7 +6,9 @@ $config=array(
 'db_name' => 'et',
 'page_title' => 'Schulung',
 'chatbot' => 'Wächter',
-'blacklist' => array('arsch','sex','fick','nutte','hure','fotze','cs','penis')
+'blacklist' => array('arsch','sex','fick','nutte','hure','fotze','cs','penis'),
+'log' => '2',
+'register' => '1'
 
 );
 

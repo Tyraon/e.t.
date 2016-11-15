@@ -1,6 +1,6 @@
 <div id="chatWindow">
 	<div id="chat_head">
-    	<span id="chat_title">Chatroom</span>
+    	<!--<span id="chat_title">Chatroom</span>-->
     	<button id="winClose">x</button>
     </div>
     

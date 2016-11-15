@@ -23,6 +23,10 @@ function setOnline(){
 		@mysql_query("UPDATE `et_online` SET `logtime` = '".$zeit."' WHERE `username` = '{$_SESSION['et_user']}'");
 	} else {
 		@mysql_query("INSERT INTO `et_online`VALUES('{$_SESSION['et_user']}','".$zeit."')");
+		$time = date("u");
+		$channel = $_SESSION['channel'];
+		$whisper = "NULL";
+		@mysql_query("INSERT INTO `et_chat` VALUES('','".$chatbot."','".$time."','".$channel."','".$whisper."','<b>Der Nutzer ".$_SESSION['et_user']." betritt den Chat!</b>')");
 	}
 }
 
@@ -67,7 +71,7 @@ if($_GET['a'] == "in") {
 	$_SESSION['channel'] = !$_SESSION['channel'] ? "Lobby" : $_SESSION['channel'];
 	$channel = $_SESSION['channel'];
 	$whisper = 'NULL';
-	$input = $_POST['message'];
+	$input = strip_tags($_POST['message']);
 	if(@$_SESSION['lastmsg'] == $input) {
 		if(@$_SESSION['spam'] == "1") {
 			$_SESSION['spam'] = "2";

@@ -15,6 +15,7 @@
 <body>
 <?php
 @include('inc/style/header.php');
+@include('inc/announce.php');
 @include('inc/route.php');
 ?>
 

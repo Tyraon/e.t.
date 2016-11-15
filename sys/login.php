@@ -17,11 +17,16 @@ if($_GET['a'] == "1") {
 		$_SESSION['et_email'] = $data[3];
 		$_SESSION['et_course'] = $data[8];
 		$newtime = date("Y-m-d H:i:s");
-		@mysql_query("UPDATE et_user SET last_login='".$newtime."' WHERE username LIKE '{$_POST['user']}");
+		@mysql_query("UPDATE `et_user` SET `last_login` = '".$newtime."' WHERE `username` = '{$_POST['user']}");
+		$logging = "1,User ".$_POST['user']." login :: success";
+		@include('sys/log.php');
+		
 		echo '<script>location.replace("index.php");</script>';
         //echo session_id();
 		//echo $newtime;
 	} else {
+		$logging = "1,User ".$_POST['user']." login :: failed";
+		@include('sys/log.php');
 		$errmsg = 'Anmeldedaten nicht korrekt!';
 	}
 	@mysql_close($db);
@@ -37,4 +42,11 @@ if($_GET['a'] == "1") {
 <input name="pass" type="password" class="login" placeholder="Passwort" /><br />
 <button type="submit" class="login" style="margin-top: 5px;">Anmelden</button>
 </form>
+<?php
+if($config['register'] == '1') {
+?>
+<a href="index.php?page=register" class="register">Registrieren</a>
+<?php
+}
+?>
 </div>

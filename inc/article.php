@@ -1,6 +1,3 @@
-<?php
-if($_SESSION['et_lvl'] >="4") {
-?>
 <div class="content">
     <div id="dashboard">
     	
@@ -11,7 +8,7 @@ if($_SESSION['et_lvl'] >="4") {
 	reLoad();
 	function reLoad(){
 		$.ajax({
-			url: 'class/course.class.php?a=rl',
+			url: 'class/article.class.php?a=rl',
 			method: 'GET'
 		}).done(function(result){
 			$('#dashboard').html(result);
@@ -20,13 +17,22 @@ if($_SESSION['et_lvl'] >="4") {
 	
 	$('#newuser').click(function(){
 		$.ajax({
-			url: 'class/course.class.php?a=opennew',
+			url: 'class/article.class.php?a=opennew',
 			method: 'GET'
 		}).done(function(result){
 			$('body').append(result);
 		});
 	});
-</script>
+
 <?php
+if(@$_GET['link'] != '') {
+	echo '$.ajax({
+			url: \'class/article.class.php?a=article&art='.$_GET['link'].'\',
+			method: \'GET\'
+	}).done(function(result){
+		$(\'#dashboard\').html(result);
+	});';
 }
+
 ?>
+</script>

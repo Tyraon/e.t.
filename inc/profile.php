@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 $errmsg;
 if($_GET['a'] == "1") {
 	if($_POST['pass'] != "" && $_POST['pass'] == $_POST['pass2']) {
@@ -38,7 +38,7 @@ switch($_SESSION['et_lvl']) {
         <form action="index.php?page=profile&a=1" method="post">
         	<tr><td rowspan="8" valign="top" style="background-image:url('img/Gast.gif'); background-size:120px 160px; width:120px; height:160px; background-repeat:no-repeat; background-position:center top;"><img src="img/border.png" height="160" /></td>
             <td>Benutzer: </td>
-            <td><input name="user" value="<?= $_SESSION['et_user'];?>" class="login" /></td></tr>
+            <td><input name="user" value="<?= $_SESSION['et_user'];?>" class="login" readonly /></td></tr>
             <tr><td>Rang: </td>
             <td><input name="rang" value="<?= $rang;?>" class="login" readonly="readonly" /></td></tr>
             <tr><td>Nachname: </td>

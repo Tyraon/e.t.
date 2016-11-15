@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 @session_start();
 @include('../sys/config.php');
 
@@ -18,6 +18,10 @@ if($_GET['a'] == 'rl') {
         <img src="img/gnome-panel-workspace-switcher.png" height="40" id="settings" /></td></tr>
         <tr><td id="settings">Einstellung
         </td></tr></table>
+		<table border="0" class="citem" id="announce"><tr><td id="announce">
+        <img src="img/sticky-notes.png" height="40" id="announce" /></td></tr>
+        <tr><td id="announce">Meldungen
+        </td></tr></table>
 		
 		<script>
 		$(\'.citem\').click(function(e){
@@ -35,7 +39,7 @@ if($_GET['a'] == 'rl') {
 
 if($_GET['a'] == 'open') {
 	if($_GET['open'] == 'user') {
-		echo '<span id="range"><div id="readWindow"><div id="mhead"><button id="winClose">x</button></div><img src="img/emblem-draft.png" height="40" id="newuser" /><br /><table border="0" width="100%" style="border-collapse:collapse;">
+		echo '<span id="range"><div id="readWindow"><div id="mhead"><button id="winClose">x</button></div><img src="img/contact-new.png" height="40" id="newuser" /><br /><table border="0" width="100%" style="border-collapse:collapse;">
 		<tr style="background:#ddd;"><th align="left">Nachname</th><th align="left">Vorname</th><th align="left">E-Mail</th><th></th></tr>';
 		$erg = @mysql_query("SELECT * FROM `et_user` WHERE `course` = '{$_SESSION['et_course']}' AND `id` != '{$_SESSION['et_uid']}' ORDER BY `last_name` ASC");
 		while($data = @mysql_fetch_row($erg)) {
@@ -150,7 +154,7 @@ if($_GET['a'] == 'open') {
 			$(\'#readWindow\').draggable({disabled:true});
 		});
 		
-		$(\'#filter\').keyup(filter);
+		$(\'#filter\').keyup(range);
 		
 		function filter(){
 			$.ajax({
@@ -162,7 +166,7 @@ if($_GET['a'] == 'open') {
 		}
 		function range(){
 			$.ajax({
-				url: \'class/course.class.php?a=presence&presence=month&month=\' + $(\'#range option:selected\').val() + \'&year=\' + $(\'#year\').val(),
+				url: \'class/course.class.php?a=presence&presence=month&month=\' + $(\'#range option:selected\').val() + \'&year=\' + $(\'#year\').val() + \'&filter=\' + $(\'#filter\').val(),
 				method: \'GET\'
 			}).done(function(result){
 				$(\'#userlist\').html(result);
@@ -175,14 +179,17 @@ if($_GET['a'] == 'open') {
 	}
 	
 	if($_GET['open'] == 'settings') {
+		$data = @mysql_fetch_row(mysql_query("SELECT * FROM `et_course` WHERE `id` = '{$_SESSION['et_course']}'"));
 		echo '<span id="range"><div id="readWindow"><div id="mhead"><button id="winClose">x</button></div>
-		<input id="filter" class="login" placeholder="Nachnamen eingeben ..." /><br>
-		<table border="0" width="100%" style="border-collapse:collapse;">
-		<tr style="background:#ddd;"><th align="left">Nachname</th><th align="left">Vorname</th><th align="left">E-Mail</th><th></th></tr>';
-		echo '<tbody id="userlist"></tbody>';
+		<table border="0" width="90%" style="border-collapse:collapse; margin-top:30px;">';
+		echo '<tbody>
+		<tr><td>Name des Kurses: </td><td align="right"><input id="cname" value="'.$data[2].'" class="login" style="width:400px;" /></td></tr>
+		<tr><td valign="top">Beschreibung: </td><td align="right"><textarea id="cdescript" class="descript" style="border: 1px solid #aaa; border-radius: 5px; padding-left: 5px; padding-right: 5px; background: none; color: #333; font-family:Lucida Sans Unicode, Lucida Grande, sans-serif; width: 400px; height: 100px;">'.$data[3].'</textarea></td></tr>
+		<tr><td colspan="2" align="right"><button id="save" type="submit" class="login">Speichern</button></td></tr>
+		</tbody>';
 		echo '</table></div>
 		<script>
-		filter();
+		
 		
 		$(\'#winClose\').click(function(){
 			$(\'#range\').remove();
@@ -194,20 +201,126 @@ if($_GET['a'] == 'open') {
 			$(\'#readWindow\').draggable({disabled:true});
 		});
 		
-		$(\'#filter\').keyup(filter);
+		$(\'#save\').click(filter);
 		
 		function filter(){
 			$.ajax({
-				url: \'class/course.class.php?a=filter&filter=\' + $(\'#filter\').val(),
-				method: \'GET\'
+				url: \'class/course.class.php?a=course&course=upd\',
+				method: \'POST\',
+				data: {course_name: $(\'#cname\').val(), course_descript: $(\'#cdescript\').val()}
 			}).done(function(result){
-				$(\'#userlist\').html(result);
+				$(\'body\').append(result);
+				$(\'#range\').remove();
 			});
 		}
 		
 		</script></span>
 		';
 
+	}
+	
+	if($_GET['open'] == 'announce') {
+		echo '<span id="range"><div id="readWindow"><div id="mhead"><button id="winClose">x</button></div>
+		<img src="img/document-edit.png" id="newann" height="40" /><br>
+		<table border="0" width="100%"><tr><th align="left">Titel</th><th align="left">Teilnehmer</th><th align="left">Datum</th><th align="left">gelesen?</th><th>L&ouml;schen</th></tr>';
+		$erg = @mysql_query("SELECT * FROM `et_announce` WHERE `sender` = '{$_SESSION['et_uid']}' ORDER BY `id` DESC");
+		while($data = @mysql_fetch_row($erg)) {
+			$img = $data[6] == 1 ?  'package-installed-updated' : 'gtk-missing-image';
+			$user = @mysql_fetch_row(mysql_query("SELECT `last_name`, `first_name` FROM `et_user` WHERE `id` = '{$data[1]}'"));
+			echo '<tr><td>'.$data[3].'</td><td>'.utf8_encode($user[0].', '.$user[1]).'</td><td>'.$data[4].'</td><td align="center"><img src="img/'.$img.'.png" height="16" /></td><td align="center"><img src="img/mac-trashcan_full-new.png" height="16" class="delete" id="'.$data[0].'"</td></tr>';
+		}
+		echo '</table></div>
+		<script>
+		
+		
+		$(\'#winClose\').click(function(){
+			$(\'#range\').remove();
+		});
+		
+		$(\'#mhead\').mousedown(function(){
+			$(\'#readWindow\').draggable({disabled:false});
+		}).mouseup(function(){
+			$(\'#readWindow\').draggable({disabled:true});
+		});
+		
+		$(\'#newann\').click(function(){
+			console.log("OK");
+			$.ajax({
+				url: \'class/course.class.php?a=open&open=newann\',
+				method: \'GET\'
+			}).done(function(result){
+				$(\'#range\').remove();
+				$(\'body\').append(result);
+			});
+		});
+		
+		$(\'.delete\').click(function(e){
+			var target = !e.toElement ? e.target.id : e.toElement.id;
+			$.ajax({
+				url: \'class/course.class.php?a=delann&ann=\' + target,
+				method: \'GET\'
+			}).done(function(result){
+				console.log(result);
+				$(\'#range\').remove();
+				$.ajax({
+					url: \'class/course.class.php?a=open&open=announce\',
+					method: \'GET\'
+				}).done(function(result){
+					$(\'body\').append(result);
+				});
+			});
+		});
+		
+		</script></span>
+		';
+	}
+	
+	if($_GET['open'] == 'newann') {
+		$content = @!$_GET['link'] ? '' : '<a href="index.php?page=article&link='.$_GET['link'].'">Artikel</a>';
+		$data = @mysql_fetch_row(mysql_query("SELECT `course_name` FROM `et_course` WHERE `id` = '{$_SESSION['et_course']}'"));
+		echo '<span id="range"><div id="readWindow"><div id="mhead"><button id="winClose">x</button></div>
+		<table border="0">';
+		echo '<tr><td>Empf&auml;nger: </td><td><select class="login" size="1" id="touser">
+		<optgroup label="Kurs">
+		<option value="c:'.$_SESSION['et_course'].'">'.$data[0].'</option>
+		</optgroup>
+		<optgroup label="Teilnehmer">';
+		$erg = @mysql_query("SELECT `id`, `last_name`, `first_name` FROM `et_user` WHERE `course` = '{$_SESSION['et_course']}' AND `id` != '{$_SESSION['et_uid']}'");
+		while($data = @mysql_fetch_row($erg)) {
+			echo '<option value="u:'.$data[0].'">'.$data[1].', '.$data[2].'</option>';
+		}
+		echo '</optgroup></select></td></tr>
+		<tr><td>Titel: </td><td><input id="ann_title" class="login" style="width: 400px;" /></td></tr>
+		<tr><td valign="top">Nachricht: </td><td><textarea id="ann_msg" class="login" style="height:50px; width:400px;">'.$content.'</textarea></td></tr>
+		<tr><td colspan="2" align="right"><button id="save" class="login">Senden</button></td></tr>';
+		echo '</table></div>
+		<script>
+		
+		
+		$(\'#winClose\').click(function(){
+			$(\'#range\').remove();
+		});
+		
+		$(\'#mhead\').mousedown(function(){
+			$(\'#readWindow\').draggable({disabled:false});
+		}).mouseup(function(){
+			$(\'#readWindow\').draggable({disabled:true});
+		});
+		
+		$(\'#save\').click(function(){
+			$.ajax({
+				url: \'class/course.class.php?a=newann\',
+				method: \'POST\',
+				data: {touser: $(\'#touser option:selected\').val(), ann_title: $(\'#ann_title\').val(), ann_msg: $(\'#ann_msg\').val()}
+			}).done(function(result){
+				//$(\'body\').append(result);
+				$(\'#range\').remove();
+				console.log(result);
+			});
+		});
+		
+		</script></span>
+		';
 	}
 }
 
@@ -267,17 +380,17 @@ if($_GET['a'] == 'presence') {
 			echo '<th align="left">'.($i+1).'</th>';
 		}
 		echo '</tr>';
-		$erg = @mysql_query("SELECT * FROM `et_user` WHERE `course` = '{$_SESSION['et_course']}' AND `id` != '{$_SESSION['et_uid']}' ORDER BY `last_name` ASC");
+		$erg = @mysql_query("SELECT * FROM `et_user` WHERE `course` = '{$_SESSION['et_course']}' AND `last_name` LIKE '%{$_GET['filter']}%' AND `id` != '{$_SESSION['et_uid']}' ORDER BY `last_name` ASC");
 		while($data = @mysql_fetch_row($erg)) {
 			echo '<tr><td><small>'.utf8_encode($data[7]).', '.$data[6].'</small></td>';
 			for($i = 0; $i < $days; $i++) {
 				$d = $i+1;
 				$d = $d < 10 ? '0'.$d : $d;
-				$anz = @mysql_num_rows(mysql_query("SELECT * FROM `et_presence` WHERE `uid` = '{$data[0]}' AND `year` = '".$year."' AND `month` ='".$month."' AND `day` = '".$d."'"));
+				$anz = @mysql_num_rows(mysql_query("SELECT * FROM `et_presence` WHERE `uid` = '{$data[0]}' AND `year` = '".$year."' AND `month` ='".($month+1)."' AND `day` = '".$d."'"));
 				if($anz == 1) {
-					echo '<td style="border:1px solid #333;"><img src="img/package-installed-updated.png" height="20"></td>';
+					echo '<td style="border:1px solid #333;"><img src="img/package-installed-updated.png" height="16"></td>';
 				} else {
-					echo '<td style="border:1px solid #333;"><img src="img/gtk-missing-image.png" height="20"></td>';
+					echo '<td style="border:1px solid #333;"><img src="img/gtk-missing-image.png" height="16"></td>';
 				}
 			}
 			echo '</tr>';
@@ -285,7 +398,31 @@ if($_GET['a'] == 'presence') {
 	}
 }
 
+if($_GET['a'] == 'course') {
+	if($_GET['course'] == 'upd') {
+		if(@mysql_query("UPDATE `et_course` SET `course_name` ='{$_POST['course_name']}', `descript` = '{$_POST['course_descript']}' WHERE `id` = '{$_SESSION['et_course']}'")) {
+			echo '<script>console.log("saved");</script>';
+		}
+	}
+}
 
+if($_GET['a'] == 'newann') {
+	$user = substr($_POST['touser'],2);
+	if(substr($_POST['touser'],0,2) == 'u:') {
+		@mysql_query("INSERT INTO `et_announce` VALUES('','".$user."','{$_SESSION['et_uid']}','{$_POST['ann_title']}','".date("Y-m-d H:i:s")."','{$_POST['ann_msg']}','0')");
+	} else {
+		$erg = @mysql_query("SELECT `id` FROM `et_user` WHERE `course` = '{$_SESSION['et_course']}'");
+		while($data = @mysql_fetch_row($erg)) {
+			@mysql_query("INSERT INTO `et_announce` VALUES('','{$data[0]}','{$_SESSION['et_uid']}','{$_POST['ann_title']}','".date("Y-m-d H:i:s")."','{$_POST['ann_msg']}','0')");
+		}
+	}
+	echo 'send';
+}
+
+if($_GET['a'] == 'delann') {
+	@mysql_query("DELETE FROM `et_announce` WHERE `id` = '{$_GET['ann']}'");
+	echo "deleted";
+}
 
 @mysql_close($db);
 ?>

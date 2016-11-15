@@ -16,22 +16,19 @@
         <img src="img/help-faq.png" height="40" id="chat" /></td></tr>
         <tr><td id="chat">Chat
         </td></tr></table>
-        <table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
+        <!--<table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
         <img src="img/checklist-icon--e-commerce-iconset--ebiene-11.png" height="40" /></td></tr>
         <tr><td>Tests
+        </td></tr></table>-->
+		<table border="0" class="ditem" id="article"><tr><td id="article">
+        <img src="img/default-document-2.png" height="40" id="article" /></td></tr>
+        <tr><td id="article">Artikel
         </td></tr></table>
-		<table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
-        <img src="img/default-document-2.png" height="40" /></td></tr>
-        <tr><td>Artikel
-        </td></tr></table>
-		<table border="0" class="ditem" id="presence" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td id="presence">
+	<table border="0" class="ditem" id="presence"><tr><td id="presence">
         <img src="img/preferences-calendar-and-tasks.png" height="40" id="chat" /></td></tr>
         <tr><td id="presence">Anwesend
         </td></tr></table>
-        <table border="0" class="ditem" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td>
-        <img src="img/settings-icon-25.png" height="40" /></td></tr>
-        <tr><td>Einstellung
-        </td></tr></table>
+        
         <?php
 		if($_SESSION['et_lvl'] >= "4") {
 		?>        
@@ -44,11 +41,20 @@
 		}
 		if($_SESSION['et_lvl'] == "5") {
 		?>
-        <table border="0" class="ditem" id="manage" style="opacity: 0.5;" title="Funktion noch nicht aktiv!"><tr><td id="manage">
+        <table border="0" class="ditem" id="manage"><tr><td id="manage">
         <img src="img/preferences-contact-list.png" height="40" id="manage" /></td></tr>
         <tr><td id="manage">Benutzer
         </td></tr></table>
 
+	<table border="0" class="ditem" id="newcourse"><tr><td id="newcourse">
+        <img src="img/user-group-new.png" height="40" id="newcourse" /></td></tr>
+        <tr><td id="newcourse">Courses
+        </td></tr></table>
+
+	<table border="0" class="ditem" id="settings"><tr><td id="settings">
+        <img src="img/settings-icon-25.png" height="40" id="settings" /></td></tr>
+        <tr><td id="settings">Einstellung
+        </td></tr></table>
         <?php
 		}
 		?>

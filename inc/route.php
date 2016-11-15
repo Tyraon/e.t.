@@ -5,6 +5,9 @@ if(!$_SESSION['et_uid']) {
 		default:
 		@include('sys/login.php');
 		break;
+		case "register":
+		@include('inc/register.php');
+		break;
 	}	
 } else {
 	@include('inc/menu.php');
@@ -33,6 +36,12 @@ if(!$_SESSION['et_uid']) {
 		case "presence":
 		@include('inc/presence.php');
 		break;
+		case "newcourse":
+		@include('inc/newcourse.php');
+		break;
+		case "article":
+		@include('inc/article.php');
+		break;		
 	}
 }
 

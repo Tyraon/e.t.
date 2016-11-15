@@ -17,4 +17,18 @@ $(document).ready(function(){
 		console.log(target);
 		location.replace('index.php?page=' + target);
 	});
+
+	$('#default_logo').click(function(){
+		location.replace('index.php');
+	});
+	
+	$('.ann_close').click(function(e){
+		var target = !e.toElement ? e.target.id : e.toElement.id;
+		$.ajax({
+			url: 'class/main.class.php?a=annread&ann=' + target,
+			method: 'GET'
+		}).done(function(result){
+			$('#ann_' + target).remove();
+		});
+	});
 });

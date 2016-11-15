@@ -1,5 +1,5 @@
 <?php
-if($_SESSION['et_lvl'] >="4") {
+if($_SESSION['et_lvl'] == "5") {
 ?>
 <div class="content">
     <div id="dashboard">
@@ -11,7 +11,7 @@ if($_SESSION['et_lvl'] >="4") {
 	reLoad();
 	function reLoad(){
 		$.ajax({
-			url: 'class/course.class.php?a=rl',
+			url: 'class/newcourse.class.php?a=rl',
 			method: 'GET'
 		}).done(function(result){
 			$('#dashboard').html(result);
@@ -20,7 +20,7 @@ if($_SESSION['et_lvl'] >="4") {
 	
 	$('#newuser').click(function(){
 		$.ajax({
-			url: 'class/course.class.php?a=opennew',
+			url: 'class/newcourse.class.php?a=opennew',
 			method: 'GET'
 		}).done(function(result){
 			$('body').append(result);
