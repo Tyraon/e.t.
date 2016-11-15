@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Nov 2016 um 08:44
+-- Erstellungszeit: 15. Nov 2016 um 10:44
 -- Server Version: 5.6.21
 -- PHP-Version: 5.5.19
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `et_chat` (
   `channel` varchar(255) NOT NULL,
   `whisperto` varchar(255) DEFAULT NULL,
   `message` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=169 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -244,7 +244,7 @@ MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT für Tabelle `et_chat`
 --
 ALTER TABLE `et_chat`
-MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=169;
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=178;
 --
 -- AUTO_INCREMENT für Tabelle `et_course`
 --

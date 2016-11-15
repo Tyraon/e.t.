@@ -20,16 +20,29 @@ $file = '../sys/config.php';
 $fp = @fopen($file,'w');
 @fwrite($fp,$dsatz);
 @fclose($fp);	
-$sql = 'source et.sql';
-@mysql_query($sql);
+$sql = 'sql/et.sql';
+$db = @mysql_connect($_POST['dbhost'],$_POST['dbuser'],$_POST['dbpass']) OR DIE("Verbindung nicht aufgebaut!");
+@mysql_select_db($_POST['dbname']) OR DIE("Datenbank nicht gefunden!");
+//$file = 'et.sql';
+$fp = fopen($sql,"r");
+$input = fread($fp,filesize($sql));
+fclose($fp);
+//echo fstat('install.php');
+$cmds = explode(';', $input); 
+foreach($cmds as $cmd){ 
+    mysql_query($cmd) || die("Error: " . mysql_error() . "<br />Cmd: ".$cmd."<br />"); 
+}  
 $pass=sha1(strtoupper($_POST['admuser']).':'.strtoupper($_POST['admpass']));
-@mysql_query("INSERT INTO `et_user` VALUES('','{$_POST['admuser']}','".$pass."','{$_POST['email']}','5','0000-00-00 00:00:00','-','-','0')");
+@mysql_query("INSERT INTO `et_user` (`id`, `username`, `userpass`, `email`, `lvl`, `last_login`, `first_name`, `last_name`, `course`) VALUES (NULL, '{$_POST['admuser']}', '".$pass."', '{$_POST['admemail']}', '5', CURRENT_TIMESTAMP, '-', '-', '0')") OR DIE(mysql_error());
+@mysql_close($db);
 }
 
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <link type="text/css" rel="stylesheet" href="../inc/style/main.css" />
 <title>Install @ E.T.</title>
 </head>
@@ -72,11 +85,16 @@ $pass=sha1(strtoupper($_POST['admuser']).':'.strtoupper($_POST['admpass']));
     	<td>E-Mail: </td><td><input name="admemail" class="login" /></td>
     </tr>
     <tr>
-    	<td colspan="2" align="right"><input type="submit" class="login" value="Installieren" /></td>
+    	<td colspan="2" align="right"><button type="submit" id="inst" class="login" onclick="install();">Installieren</button></td>
     </tr>
 </table>
 </form>
 </center>
 </div>
+<script>
+function install(){
+	$('#inst').html('<img src="47.gif" />');
+}
+</script>
 </body>
 </html>
