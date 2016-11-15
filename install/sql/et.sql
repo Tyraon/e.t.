@@ -265,6 +265,14 @@ MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 ALTER TABLE `et_user`
 MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+
+--
+-- Daten für Tabelle `et_user`
+--
+
+INSERT INTO `et_user` (`id`, `username`, `userpass`, `email`, `lvl`, `last_login`, `first_name`, `last_name`, `course`) VALUES
+(1, 'Admin', '8301316d0d8448a34fa6d0c6bf1cbfa2b4a1a93a', 'xxx@yy.zz', 5, '2016-11-09 07:49:31', 'System', 'Admin', 0);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

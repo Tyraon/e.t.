@@ -33,8 +33,8 @@ foreach($cmds as $cmd){
     mysql_query($cmd) || die("Error: " . mysql_error() . "<br />Cmd: ".$cmd."<br />"); 
 }  
 $pass=sha1(strtoupper($_POST['admuser']).':'.strtoupper($_POST['admpass']));
-@mysql_query("INSERT INTO `et_user` (`id`, `username`, `userpass`, `email`, `lvl`, `last_login`, `first_name`, `last_name`, `course`) VALUES (NULL, '{$_POST['admuser']}', '".$pass."', '{$_POST['admemail']}', '5', CURRENT_TIMESTAMP, '-', '-', '0')") OR DIE(mysql_error());
 @mysql_close($db);
+echo '<script>location.replace("../index.php");</script>';
 }
 
 ?>
