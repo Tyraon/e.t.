@@ -72,7 +72,7 @@ echo '<script>location.replace("../index.php");</script>';
     <tr>
     	<td>Datenbank: </td><td><input name="dbname" class="login" /></td>
     </tr>
-    <tr>
+<!--    <tr>
     	<td colspan="2"><b>Administrator</b><hr></td>
     </tr>
     <tr>
@@ -83,9 +83,12 @@ echo '<script>location.replace("../index.php");</script>';
     </tr>
     <tr>
     	<td>E-Mail: </td><td><input name="admemail" class="login" /></td>
+    </tr>-->
+    <tr>
+    	<td colspan="2">Die Anmeldedaten für den Administrator lauten:<br>Benutzer: <i>Admin</i><br>Passwort: <i>admin</i></td>
     </tr>
     <tr>
-    	<td colspan="2" align="right"><button type="submit" id="inst" class="login" onclick="install();">Installieren</button></td>
+    	<td colspan="2" align="right"><button type="submit" id="inst" class="login" onClick="install();">Installieren</button></td>
     </tr>
 </table>
 </form>
