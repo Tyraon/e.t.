@@ -11,6 +11,7 @@ $db = @mysql_connect($config['db_host'],$config['db_user'],$config['db_pass']) O
 @mysql_select_db($config['db_name']) OR DIE("Datenbank nicht gefunden!");
 
 if($_GET['a'] == 'rl') {
+	echo '<img src="img/Start-Menu-Search-icon.png" height="20" style="float:right;" class="search" /><input id="filter" class="login" placeholder="Suche . . ." style="float:right;" /><br>';
 	echo '<table border="0" style="border-collapse:collapse;">';
 	$erg = @mysql_query("SELECT * FROM `et_category` ORDER BY `cat_name` ASC");
 	while($data = @mysql_fetch_row($erg)) {
@@ -27,18 +28,46 @@ if($_GET['a'] == 'rl') {
 			$(\'#dashboard\').html(result);
 		});
 		});
+		
+		$(\'.search\').click(function(e){
+			$.ajax({
+				url: \'class/article.class.php?a=search&filter=\' + $(\'#filter\').val(),
+				method: \'GET\'
+			}).done(function(result){
+				$(\'#dashboard\').html(result);
+			});
+		});
 	</script>';
+}
+
+if($_GET['a'] == 'search') {
+	$erg = @mysql_query("SELECT * FROM `et_article` WHERE `content` LIKE '%{$_GET['filter']}%'");
+	while($data = @mysql_fetch_row($erg)) {
+		$user = @mysql_fetch_row(mysql_query("SELECT * FROM `et_user` WHERE `id` = '{$data[3]}'"));
+		echo '<table border="0" width="100%" class="article" id="'.$data[0].'"  style="cursor:default;"><tr><th align="left" id="'.$data[0].'">'.utf8_encode($data[2]).'</th></tr><tr><td id="'.$data[0].'"><small id="'.$data[0].'">'.substr(utf8_encode($data[5]),0,255).' . . .</small></td></tr><tr><td align="right" id="'.$data[0].'"><small><small id="'.$data[0].'"><a href="index.php?page=view&user='.$user[0].'">'.utf8_encode($user[7].', '.$user[6]).'</a> :: '.$data[4].'</small></small></td></tr></table><br>';
+	}
+	echo '<script>
+	$(\'.article\').click(function(e){
+			var target = !e.toElement ? e.target.id : e.toElement.id;
+			$.ajax({
+				url: \'class/article.class.php?a=article&art=\' + target,
+				method: \'GET\'
+			}).done(function(result){
+				$(\'#dashboard\').html(result);
+			});
+		});
+		</script>';
 }
 
 if($_GET['a'] == 'category') {
 	/*echo $_GET['cat'];
 	echo 'OK';
 	echo $_GET['a'];*/
-	echo '<img src="img/document-edit.png" height="40" id="newarticle" /><br>';
+	echo '<img src="img/gtk-convert.png" height="40" class="back" title="Zurück" /><img src="img/document-edit.png" height="40" id="newarticle" style="float:right;" /><br>';
 	$erg = @mysql_query("SELECT * FROM `et_article` WHERE `cat` = '{$_GET['cat']}' ORDER BY `id` DESC LIMIT 0,50");
 	while($data = @mysql_fetch_row($erg)) {
 		$user = @mysql_fetch_row(mysql_query("SELECT * FROM `et_user` WHERE `id` = '{$data[3]}'"));
-		echo '<table border="0" width="100%" class="article" id="'.$data[0].'"  style="cursor:default;"><tr><th align="left" id="'.$data[0].'">'.utf8_encode($data[2]).'</th></tr><tr><td id="'.$data[0].'"><small id="'.$data[0].'">'.substr(utf8_encode($data[5]),0,255).' . . .</small></td></tr><tr><td align="right" id="'.$data[0].'"><small><small id="'.$data[0].'">'.utf8_encode($user[7].', '.$user[6]).' :: '.$data[4].'</small></small></td></tr></table><br>';
+		echo '<table border="0" width="100%" class="article" id="'.$data[0].'"  style="cursor:default;"><tr><th align="left" id="'.$data[0].'">'.utf8_encode($data[2]).'</th></tr><tr><td id="'.$data[0].'"><small id="'.$data[0].'">'.substr(utf8_encode($data[5]),0,255).' . . .</small></td></tr><tr><td align="right" id="'.$data[0].'"><small><small id="'.$data[0].'"><a href="index.php?page=view&user='.$user[0].'">'.utf8_encode($user[7].', '.$user[6]).'</a> :: '.$data[4].'</small></small></td></tr></table><br>';
 	}
 	echo '<script>
 		$(\'.article\').click(function(e){
@@ -59,6 +88,10 @@ if($_GET['a'] == 'category') {
 				$(\'#dashboard\').html(result);
 			});
 		});
+		
+		$(\'.back\').click(function(e){
+			location.reload();
+		});
 	</script>';
 }
 
@@ -67,7 +100,8 @@ if($_GET['a'] == 'article') {
 	$to = $origin;
 	$data = @mysql_fetch_row(mysql_query("SELECT * FROM `et_article` WHERE `id` = '{$_GET['art']}'"));
 	$content = utf8_encode($data[5]);
-	echo '<table border="0"><tr><th align="left">'.utf8_encode($data[2]).'</th></tr><tr><td><small>';
+	echo '<img src="img/gtk-convert.png" height="40" class="back" title="Zurück" />
+	<table border="0"><tr><th align="left">'.utf8_encode($data[2]).'</th></tr><tr><td><small>';
 	//for($i = 0; $i < count($from); $i++) {
 		$content = str_replace($from,$to,$content);
 	//}
@@ -111,6 +145,17 @@ if($_GET['a'] == 'article') {
 				$(\'body\').append(result);
 			});
 		});
+		
+		$(\'.back\').click(function(e){
+		var target = '.$data[1].'; 
+		$.ajax({
+			url: \'class/article.class.php?a=category&cat=\' + target,
+			method: \'GET\'
+		}).done(function(result){
+			$(\'#dashboard\').html(result);
+		});
+		});
+
 	</script>';
 }
 
