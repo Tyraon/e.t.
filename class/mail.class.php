@@ -26,7 +26,9 @@ if($_GET['a'] == "read") {
 	if($data[2] == $_GET['check'] && $data[6] == "0") {
 		$update = @mysql_query("UPDATE `et_mail` SET `read` = '1' WHERE `et_mail`.`id` = '{$_GET['mail']}'") OR DIE('Nachricht konnte nicht gelesen werden!');
 	}
-	echo '<div id="mailHeader">Absender: <span id="sender">'.$data[1].'</span><br>Empf&auml;nger: '.$data[2].'<br>Datum: '.$data[4].'<br><b>Betreff: <span id="r_rcp">'.$data[3].'</span></b>&nbsp;<img src="img/old-edit-undo.png" id="answer" height="20" class="mhakt" />&nbsp;<img src="img/old-edit-redo.png" id="forward" height="20" class="mhakt" /></div>';
+	$user = @mysql_fetch_row(mysql_query("SELECT * FROM `et_user` WHERE `username` = '{$data[1]}'"));
+	$user2 = @mysql_fetch_row(mysql_query("SELECT * FROM `et_user` WHERE `username` = '{$data[2]}'"));
+	echo '<div id="mailHeader">Absender: <span id="sender"><a href="index.php?page=view&user='.$user[0].'">'.$data[1].'</a></span><br>Empf&auml;nger: <a href="index.php?page=view&user='.$user2[0].'">'.$data[2].'</a><br>Datum: '.$data[4].'<br><b>Betreff: <span id="r_rcp">'.$data[3].'</span></b>&nbsp;<img src="img/old-edit-undo.png" id="answer" height="20" class="mhakt" />&nbsp;<img src="img/old-edit-redo.png" id="forward" height="20" class="mhakt" /></div>';
 	echo '<textarea id="mailcontent" readonly>'.$data[5].'</textarea>';
 }
 
