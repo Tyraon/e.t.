@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Erstellungszeit: 15. Nov 2016 um 10:44
+-- Erstellungszeit: 16. Nov 2016 um 13:15
 -- Server Version: 5.6.21
 -- PHP-Version: 5.5.19
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `et_announce` (
   `ann_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ann_msg` text NOT NULL,
   `ann_read` int(1) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -50,6 +50,21 @@ CREATE TABLE IF NOT EXISTS `et_article` (
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `content` text NOT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Tabellenstruktur für Tabelle `et_avatars`
+--
+
+CREATE TABLE IF NOT EXISTS `et_avatars` (
+`id` int(10) NOT NULL,
+  `uid` int(10) NOT NULL,
+  `image_data` longblob NOT NULL,
+  `image_type` varchar(20) NOT NULL,
+  `width` int(10) NOT NULL,
+  `height` int(10) NOT NULL
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -76,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `et_chat` (
   `channel` varchar(255) NOT NULL,
   `whisperto` varchar(255) DEFAULT NULL,
   `message` text NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -180,6 +195,12 @@ ALTER TABLE `et_article`
  ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id` (`id`);
 
 --
+-- Indizes für die Tabelle `et_avatars`
+--
+ALTER TABLE `et_avatars`
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `id` (`id`);
+
+--
 -- Indizes für die Tabelle `et_category`
 --
 ALTER TABLE `et_category`
@@ -229,12 +250,17 @@ ALTER TABLE `et_user`
 -- AUTO_INCREMENT für Tabelle `et_announce`
 --
 ALTER TABLE `et_announce`
-MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT für Tabelle `et_article`
 --
 ALTER TABLE `et_article`
 MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT für Tabelle `et_avatars`
+--
+ALTER TABLE `et_avatars`
+MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT für Tabelle `et_category`
 --
@@ -244,7 +270,7 @@ MODIFY `id` int(10) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 -- AUTO_INCREMENT für Tabelle `et_chat`
 --
 ALTER TABLE `et_chat`
-MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=178;
+MODIFY `id` int(255) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=185;
 --
 -- AUTO_INCREMENT für Tabelle `et_course`
 --
