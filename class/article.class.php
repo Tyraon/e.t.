@@ -67,7 +67,7 @@ if($_GET['a'] == 'category') {
 	$erg = @mysql_query("SELECT * FROM `et_article` WHERE `cat` = '{$_GET['cat']}' ORDER BY `id` DESC");
 	while($data = @mysql_fetch_row($erg)) {
 		$user = @mysql_fetch_row(mysql_query("SELECT * FROM `et_user` WHERE `id` = '{$data[3]}'"));
-		echo '<table border="0" width="100%" class="article" id="'.$data[0].'"  style="cursor:default;"><tr><th align="left" id="'.$data[0].'">'.utf8_encode($data[2]).'</th></tr><tr><td id="'.$data[0].'"><small id="'.$data[0].'">'.substr(utf8_encode($data[5]),0,255).' . . .</small></td></tr><tr><td align="right" id="'.$data[0].'"><small><small id="'.$data[0].'"><a href="index.php?page=view&user='.$user[0].'">'.utf8_encode($user[7].', '.$user[6]).'</a> :: '.$data[4].'</small></small></td></tr></table><br>';
+		echo '<table border="0" width="100%" class="article" id="'.$data[0].'"  style="cursor:default;"><tr><th align="left" id="'.$data[0].'">'.utf8_encode($data[2]).'</th></tr><tr><td id="'.$data[0].'"><small id="'.$data[0].'">'.substr(utf8_encode(utf8_decode($data[5])),0,255).' . . .</small></td></tr><tr><td align="right" id="'.$data[0].'"><small><small id="'.$data[0].'"><a href="index.php?page=view&user='.$user[0].'">'.utf8_encode($user[7].', '.$user[6]).'</a> :: '.$data[4].'</small></small></td></tr></table><br>';
 	}
 	echo '<script>
 		$(\'.article\').click(function(e){
@@ -105,12 +105,12 @@ if($_GET['a'] == 'article') {
 	//for($i = 0; $i < count($from); $i++) {
 		$content = str_replace($from,$to,$content);
 	//}
-	echo $content;
+	echo utf8_decode($content);
 	echo '</small></td></tr><tr><td align="right">';
 	if($_SESSION['et_lvl'] >= '4') {
 		echo '<img src="img/sticky-notes.png" height="20" class="ann" title="Nachricht" />';
 	}
-	if($_SESSION['et_lvl'] == '5' || $data[2] == $_SESSION['et_uid']) {
+	if($_SESSION['et_lvl'] == '5' || $data[3] == $_SESSION['et_uid']) {
 		echo '<img src="img/format-text-direction-ltr.png" height="20" class="edit" title="edit" />';
 	}
 	if($_SESSION['et_lvl'] == '5') {

@@ -25,7 +25,7 @@
         <tr><td id="article">Artikel
         </td></tr></table>
 	<table border="0" class="ditem" id="presence"><tr><td id="presence">
-        <img src="img/preferences-calendar-and-tasks.png" height="40" id="chat" /></td></tr>
+        <img src="img/preferences-calendar-and-tasks.png" height="40" id="presence" /></td></tr>
         <tr><td id="presence">Anwesend
         </td></tr></table>
         
