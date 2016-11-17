@@ -50,6 +50,11 @@
         <img src="img/user-group-new.png" height="40" id="newcourse" /></td></tr>
         <tr><td id="newcourse">Courses
         </td></tr></table>
+        
+    <table border="0" class="ditem" id="categorys"><tr><td id="categorys">
+        <img src="img/orange-folder-drag-accept.png" height="40" id="categorys" /></td></tr>
+        <tr><td id="categorys">Categorys
+        </td></tr></table>
 
 	<table border="0" class="ditem" id="settings"><tr><td id="settings">
         <img src="img/settings-icon-25.png" height="40" id="settings" /></td></tr>

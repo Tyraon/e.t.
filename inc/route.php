@@ -45,6 +45,9 @@ if(!$_SESSION['et_uid']) {
 		case "view":
 		@include('inc/view.php');
 		break;		
+		case "categorys":
+		@include('inc/categorys.php');
+		break;		
 	}
 }
 
