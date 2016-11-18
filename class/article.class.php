@@ -2,7 +2,7 @@
 @session_start();
 @include('../sys/config.php');
 
-$origin = array('<ul>','</ul>','<li>','<small>','</small>','<em>','</em>','<h1>','</h1>','<h2>','</h2>','<h3>','</h3>','<h4>','</h4>','<br />','<p>','</p>','<b>','</b>','<i>','</i>','<u>','</u>','<s>','</s>');
+$origin = array('<ul>','</ul>','<li>','<small>','</small>','<pre>','</pre>','<h1>','</h1>','<h2>','</h2>','<h3>','</h3>','<h4>','</h4>','<br>','<p>','</p>','<b>','</b>','<i>','</i>','<u>','</u>','<s>','</s>');
 $conv = array('[list]','[/list]','*- ','[small]','[/small]','[code]','[/code]','[h1]','[/h1]','[h2]','[/h2]','[h3]','[/h3]','[h4]','[/h4]','[br]','[p]','[/p]','[b]','[/b]','[i]','[/i]','[u]','[/u]','[s]','[/s]');
 	
 
@@ -128,6 +128,8 @@ if($_GET['a'] == 'article') {
 		});
 
 		$(\'.delete\').click(function(){
+			var confirmation = confirm("Möchtest du den Artikel wirklich löschen?");
+			if(confirmation == true){
 			$.ajax({
 				url: \'class/article.class.php?a=delete&delete='.$_GET['art'].'\',
 				method: \'GET\'
@@ -135,6 +137,7 @@ if($_GET['a'] == 'article') {
 				console.log(result);
 				reLoad();
 			});
+			}
 		});
 		
 		$(\'.ann\').click(function(){
@@ -178,9 +181,14 @@ if($_GET['a'] == 'newarticle') {
 }
 
 if($_GET['a'] == 'insert') {
-	$from = origin;
+	$from = $origin;
 	$to = $conv;
 	$content = str_replace($from,$to,$_POST['art_content']);
+	$block = @explode("[code]",$content);
+	for($i=1; $i<count($block); $i++) {
+		$code = @explode("[/code]",$block[$i]);
+		$content = str_replace($code[0],htmlentities($code[0]),$content);
+	}
 
 	if(@mysql_query("INSERT INTO `et_article` VALUES('','{$_GET['cat']}','{$_POST['art_title']}','{$_SESSION['et_uid']}','".date("Y-m-d H:i:s")."','".strip_tags($content)."')")) {
 		echo 'saved';
@@ -231,6 +239,11 @@ if($_GET['a'] == 'update') {
 	$from = $origin;
 	$to = $conv;
 	$content = str_replace($from,$to,$_POST['art_content']);
+	$block = @explode("[code]",$content);
+	for($i=1; $i<count($block); $i++) {
+		$code = @explode("[/code]",$block[$i]);
+		$content = str_replace($code[0],htmlentities($code[0]),$content);
+	}
 
 	if(@mysql_query("UPDATE `et_article` SET `art_title` = '{$_POST['art_name']}', `content` = '".strip_tags($content)."' WHERE `id` = '{$_GET['update']}'")) {
 		echo "updated";
